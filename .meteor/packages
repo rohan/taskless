@@ -1,0 +1,24 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-platform
+less
+natestrauser:animate-css
+ian:accounts-ui-bootstrap-3
+accounts-password
+underscore
+mizzao:bootstrap-3
+iron:router
+sacha:spin
+accounts-google
+mrt:moment-timezone
+http
+rajit:bootstrap3-datepicker
+percolate:google-api
+
+mrt:bootstrap-select
+ajduke:bootstrap-tagsinput
+rubaxa:sortable
+matteodem:easy-search

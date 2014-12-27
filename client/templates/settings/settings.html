@@ -1,0 +1,43 @@
+<template name="settings">
+  <li id="login-dropdown-list" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="modal" data-target="#settingsModal">
+      <span class="glyphicon glyphicon-cog"></span>
+    </a>
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form class="main form" id="settingsForm">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Settings</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <!-- <div class="controls">
+                  {{> minutesOptions}}
+                </div> -->
+                {{> calendarList }}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" value="Save changes" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </li>
+</template>
+
+<template name="minutesOptions">
+  <select id="minutesOptions" form="settingsForm">
+    {{#each minutesOptions}}
+      {{> minutesOption}}
+    {{/each}}
+  </select>
+</template>
+
+<template name="minutesOption">
+  <option>{{value}}</option>
+</template>

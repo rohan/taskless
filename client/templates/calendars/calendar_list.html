@@ -1,0 +1,12 @@
+<template name="calendarList">
+  <li id="login-dropdown-list" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Calendars <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu scrollable-menu col-sm-3">
+      {{#each calendars}}
+        {{> calendarItem}}
+      {{/each}}
+    </ul>
+  </li>
+</template>

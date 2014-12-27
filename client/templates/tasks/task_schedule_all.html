@@ -1,0 +1,39 @@
+<template name="taskScheduleAll">
+  <a class="dropdown-toggle" id="modal-toggle" data-toggle="modal" data-target="#scheduleAllModal">
+    <span class="glyphicon glyphicon-calendar"></span>
+  </a>
+  <div class="modal fade" id="scheduleAllModal" tabindex="-1" role="dialog" aria-labelledby="scheduleAllModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">Schedule All</h4>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Order your tasks in the order in which you'd like them scheduled.</p>
+          <ul id="sortedList">
+            {{#if areTasks}}
+              {{#each parentTasks}}
+                {{> taskTitleItem}}
+              {{/each}}
+            {{else}}
+              <p class="notasks lead">no tasks found</p>
+            {{/if}}
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="taskTitleItem">
+  <li data-id={{_id}}>
+    <button class="action-button delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-remove"></span></button>
+
+    <span class="title">{{title}} ({{length}})</span>
+  </li>
+</template>

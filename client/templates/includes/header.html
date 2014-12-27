@@ -1,0 +1,38 @@
+<template name="header">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{pathFor 'tasksList'}}">Taskless</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navigation">
+        <ul class="nav navbar-nav navbar-right">
+          {{#if currentUser}}
+            {{> navbarSubmit }}
+            {{> navbarScheduleAll }}
+          {{/if}}
+          {{> yield 'settings'}}
+          {{> loginButtons}}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--{{#if currentUser}}{{> taskSubmit}}{{/if}}-->
+</template>
+
+<template name="navbarSubmit">
+  <li id="login-dropdown-list" class="dropdown">
+    {{> taskSubmit }}
+  </li>
+</template>
+
+<template name="navbarScheduleAll">
+  <li id="login-dropdown-list" class="dropdown">
+    {{> taskScheduleAll }}
+  </li>
+</template>

@@ -1,0 +1,48 @@
+<template name="taskItem">
+  <li class="{{#if checked}}checked{{/if}}">
+    {{#if edit_mode}}
+      <form id="edit_form">
+        <button type="button" class="action-button deletechanges" data-toggle="tooltip" title="Delete changes">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <button class="action-button savechanges" data-toggle="tooltip" title="Save changes">
+          <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <div class="form-group">
+          <div class="controls">
+            <input name="title" id="title" type="text" value={{title}} class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="controls">
+            <input name="date" type="text" class="form-control date-picker" id="date-picker" />
+            <!-- <div id="date-picker"></div> -->
+            <input name="length" id="length" type="number" value={{length}} class="form-control" />
+          </div>
+        </div>
+      </form>
+    {{else}}
+      <button class="action-button delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span></button>
+
+      <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+
+      <span class="title">{{title}} ({{length}})</span>
+      <!--span class="date">{{date}}</span-->
+
+      <span class="date">{{#if schedule_time}}{{schedule_time}}{{/if}}</span>
+
+      {{#if schedule_time}}
+        <button class="action-button unschedule" data-toggle="tooltip" title="Unschedule"><span class="glyphicon glyphicon-remove-circle"></span></button>
+      {{else}}
+        <button class="action-button schedule" data-toggle="tooltip" title="Schedule"><span class="glyphicon glyphicon-calendar"></span></button>
+      {{/if}}
+      <button class="action-button edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-pencil"></span></button>
+      <button class="action-button addSubtask" data-toggle="tooltip" title="Add subtask"><span class="glyphicon glyphicon-plus"></span></button>
+      <ul class="taskList">
+        {{# each t_children}}
+          {{> taskItem }}
+        {{/each}}
+      </ul>
+    {{/if}}
+  </li>
+</template>

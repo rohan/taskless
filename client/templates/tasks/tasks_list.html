@@ -1,0 +1,27 @@
+<template name="tasksList">
+  <div class="tasks">
+  	<ul class="tasklist">
+      {{#if areTasks }}
+        {{#if completeVisible}}
+          <button class="btn btn-default hideComplete">
+            Hide completed tasks
+          </button>
+        {{else}}
+          <button class="btn btn-default showComplete">
+            Show completed tasks
+          </button>
+        {{/if}}
+  	    {{#each tasks}}
+  	      {{> taskItem}}
+  	    {{/each}}
+        <div id="completed" style="display: none">
+          {{#each completedTasks}}
+            {{> taskItem}}
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="notasks lead"> add a task above </p>
+      {{/if}}
+		</ul>
+  </div>
+</template>

@@ -11,28 +11,32 @@
         <a class="navbar-brand" href="{{pathFor 'tasksList'}}">Taskless</a>
       </div>
       <div class="collapse navbar-collapse" id="navigation">
-        <ul class="nav navbar-nav navbar-right">
-          {{#if currentUser}}
-            {{> navbarSubmit }}
-            {{> navbarScheduleAll }}
-          {{/if}}
-          {{> yield 'settings'}}
-          {{> loginButtons}}
+        <ul class="nav navbar-nav navbar-right" style="background-color: inherit;">
+          <div class="row">
+            <div class="col-xs-6 col-md-4">
+              {{#if currentUser}}
+                {{> navbarSubmit }}
+                <!-- {{> navbarScheduleAll }} -->
+              {{/if}}
+            </div>
+            <div class="col-md-offset-1 col-xs-6 col-md-6">
+              {{> loginUI}}
+            </div>
+          </div>
         </ul>
       </div>
     </div>
   </nav>
-  <!--{{#if currentUser}}{{> taskSubmit}}{{/if}}-->
 </template>
 
 <template name="navbarSubmit">
-  <li id="login-dropdown-list" class="dropdown">
+  <!-- <li id="login-dropdown-list" class="dropdown"> -->
     {{> taskSubmit }}
-  </li>
+  <!-- </li> -->
 </template>
 
 <template name="navbarScheduleAll">
-  <li id="login-dropdown-list" class="dropdown">
+  <!-- <li id="login-dropdown-list" class="dropdown"> -->
     {{> taskScheduleAll }}
-  </li>
+  <!-- </li> -->
 </template>

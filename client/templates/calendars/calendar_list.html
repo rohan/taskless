@@ -1,12 +1,21 @@
 <template name="calendarList">
   <li id="login-dropdown-list" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown">
-      Calendars <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu scrollable-menu col-sm-3">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      Select Calendars <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu scrollable-menu">
       {{#each calendars}}
         {{> calendarItem}}
       {{/each}}
     </ul>
+  </li>
+</template>
+
+<template name="calendarItem">
+  <li class="{{#if checked}}{{else}}checked{{/if}}">
+
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+
+    <span class="title calendar">{{summary}}</span>
   </li>
 </template>

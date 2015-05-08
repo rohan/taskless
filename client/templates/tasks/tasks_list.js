@@ -1,10 +1,13 @@
 Template.tasksList.helpers({
   tasks: function() {
-    return Tasks.find({parent: "", checked: false}, {sort: {submitted: -1}});
+    // return Tasks.find({parent: "", checked: false}, {sort: {submitted: -1}});
+    return Tasks.find({checked: false}, {sort: {submitted: -1}});
   },
 
   completedTasks: function() {
-    return Tasks.find({parent: "", checked: true}, {sort: {submitted: -1}});
+    //return Tasks.find({parent: "", checked: true}, {sort: {submitted: -1}});
+    return Tasks.find({checked: true}, {sort: {submitted: -1}});
+
   },
   
   areTasks: function() {
@@ -13,6 +16,10 @@ Template.tasksList.helpers({
 
   completeVisible: function() {
     return Session.get("completeVisible");
+  },
+
+  completedTasksExist: function() {
+    return Tasks.find({checked: true}).fetch().length != 0;
   }
 });
 

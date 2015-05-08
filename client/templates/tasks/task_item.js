@@ -3,16 +3,24 @@ Template.taskItem.helpers({
     return this.userId === Meteor.userId();
   },
 
-  t_children: function() {
-    var out = [];
-    var length = this.children.length;
-    for (var i = 0; i < length; i++) {
-      console.log("got child " + this.children[i]);
-      out.push(Tasks.findOne(this.children[i]));
-    }
+  shouldISpin: function() {
+    return Session.get("shouldISpin" + this._id);
+  },
 
+  dateString: function() {
+    return Date.create(this.date).format("{Weekday}, {Month} {day}");
+  },
+
+  isScheduled: function() {
+    console.log("is scheduled:", this.scheduledDate != null);
+    return this.scheduledDate != null;
+  },
+
+  scheduledDateString: function() {
+    var out = Date.create(this.scheduledDate).format("{Weekday}, {Month} {day} at {12hr}:{mm} {TT}");
+    console.log(out);
     return out;
-  }
+  },
 });
 
 Template.taskItem.events({
@@ -25,7 +33,6 @@ Template.taskItem.events({
 
 	"click .delete": function (e, b) {
 		e.preventDefault();
-    console.log(b.data._id + " " + this._id);
     if (b.data._id === this._id) {
       Meteor.call('taskDelete', this._id, function (error, result) {
         if (error)
@@ -36,6 +43,7 @@ Template.taskItem.events({
 
   "click .schedule": function (e,b) {
     e.preventDefault();
+    Session.set("shouldISpin" + this._id, true);
     if (this._id === b.data._id) {
       Meteor.call('taskSchedule', this._id, function(error, result) {
         if (error)
@@ -45,12 +53,15 @@ Template.taskItem.events({
         } else {
           console.log("time: " + result);
         }
+
+        Session.set("shouldISpin" + this._id, false);
       });
     }
     
   },
 
   "click .unschedule": function(e,b) {
+    Session.set("shouldISpin" + this._id, false);
     e.preventDefault();
     if (this._id === b.data._id)
       Meteor.call('unscheduleTask', this._id, function(error, result) {
@@ -58,58 +69,10 @@ Template.taskItem.events({
         else console.log("successfully unscheduled");
       });
   },
-
-  "click .addSubtask": function (e,b) {
-    e.preventDefault();
-    if (this._id === b.data._id) {
-      Meteor.call('updateSettings', { arg : 'parent_id', val : this._id });
-      $("#addModal").modal('show');
-    }
-  },
-
-  "click .edit": function (e,b) {
-    e.preventDefault();
-    if (this._id === b.data._id) {
-      Tasks.update({_id: this._id}, {$set: {edit_mode: true}});
-      console.log(this.date);
-      $('.edit-form>.date-picker').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        clearBtn: true,
-      });
-      $('.edit-form>.date-picker').datepicker("setDate", new Date());
-    }
-  },
-
-  "click .deletechanges": function(e) {
-    e.preventDefault();
-    Tasks.update({_id: this._id}, {$set: {edit_mode: false}});
-  },
-
-  "submit form": function(e) {
-    e.preventDefault();
-    var update = {
-      edit_mode: false,
-      title: $(e.target).find('[name=title]').val(),
-      length: parseInt($(e.target).find('[name=length]').val()),
-      date: moment.tz($(e.target).find('[name=date]').val(), getTimeZone()).toISOString()
-    }
-
-    console.log(update);
-
-    Tasks.update({_id: this._id}, {$set: update});
-    console.log("updated task!");
-  }
 });
 
 Template.taskItem.rendered = function() {
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   });
-  console.log("(edit) rendered datepicker");
-}
-
-function getTimeZone() {
-  var tz = jstz.determine();
-  return tz.name();
 }

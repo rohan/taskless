@@ -8,33 +8,31 @@ Object.size = function(obj) {
 
 Meteor.methods({
   taskInsert: function(taskAttributes) {
+    console.log("testing");
     check(Meteor.userId(), String);
 
-    check(taskAttributes, {
-      title: String,
-      date: String,
-      length: Number,
-      checked: Boolean,
-      //tags: [Match.Any],
-    });
+    // this is now handled by schema validation
+    // check(taskAttributes, {
+    //   title: String,
+    //   date: String,
+    //   // dateString: String,
+    //   length: Number,
+    // });
  
     var user = Meteor.user();
 
     var parent_id = Constants.find({key: "parent_id"}).fetch()[0].value;
     var task = _.extend(taskAttributes, {
-      userId: user._id, 
-      author: user.username, 
-      submitted: new Date(),
-      schedule_time: null,
-      children: [],
-      parent: parent_id,
-      cal_id: "",
-      edit_mode: false,
+      checked: false,
+      userId: user._id,
+      author: user.profile.name, 
+      submittedDate: Date.create(),
     });
+
+    console.log(task);
 
     var taskId = Tasks.insert(task);
     console.log("inserted task with id " + taskId);
-    Tasks.update({_id : parent_id}, {$addToSet: {children: taskId}}); // uhhhh
 
     return {
       _id: taskId
@@ -43,15 +41,6 @@ Meteor.methods({
 
   taskDelete: function(taskId) {
     console.log("[server] looking for id " + taskId);
-    var children = Tasks.find(taskId).fetch()[0].children;
-    var length = children.length;
-    for (var i = 0; i < length; i++) {
-      Tasks.remove(children[i]);
-    }
-
-    var parent = Tasks.findOne(taskId).parent;
-    Tasks.update({_id : parent}, {$pull: {children : taskId}});
-
     Tasks.remove(taskId);
   },
 
@@ -176,19 +165,22 @@ Meteor.methods({
     });
 
     var final_id = result.id;
-
-    var out = new Date(result.start.dateTime).toString();
-    Tasks.update({ _id: taskId }, {$set : {schedule_time : out, cal_id: final_id }});
+    var out = Date.create(result.start.dateTime);
+    Tasks.update(taskId, {$set : {scheduledDate : out, calendarId: final_id }});
     return out;
   },
 
   unscheduleTask: function(taskId) {
     var task = Tasks.findOne(taskId);
     var taskless_calendar_id = Constants.findOne({key : "taskless_calendar_id"}).value;
-    var request_url = "/calendar/v3/calendars/" + taskless_calendar_id + "/events/" + task.cal_id;
+    var request_url = "/calendar/v3/calendars/" + taskless_calendar_id + "/events/" + task.calendarId;
     console.log(request_url);
-    var result = GoogleApi.delete(request_url);
-    Tasks.update({_id : taskId}, {$set : {schedule_time : null, cal_id : ""}});
+    try {
+      GoogleApi.delete(request_url);
+    } catch (e) {
+      console.log("resource has already been deleted");
+    }
+    Tasks.update(taskId, {$set : {scheduledDate : null, calendarId : ""}}, {filter: false});
     return true;
   },
 
@@ -233,7 +225,7 @@ Meteor.methods({
     var out = Constants.find({key : arg.arg}).fetch()[0].value;
     console.log("returning " + out);
     return out;
-  }
+  },
 });
 
 function verify_sorted(l) {

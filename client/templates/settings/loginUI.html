@@ -1,0 +1,29 @@
+<template name="loginUI">
+  <!-- <li id="login-dropdown-list" class="dropdown"> -->
+    {{#if currentUser}}
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          {{username}} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a id="openSettingsModal">
+            <div class="row">
+              <div class="col-md-3"><span class="glyphicon glyphicon-cog"></span></div>
+              <div class="col-md-9">Settings</div>
+            </div></a>
+          </li>
+          <li><a id="logoutButton">
+            <div class="row">
+              <div class="col-md-3"><span class="glyphicon glyphicon-log-out"></span></div>
+              <div class="col-md-9">Log out</div>
+            </div></a>
+          </li>
+        </ul>
+      </div>
+    {{else}}
+      <button class="btn btn-Google" id="loginButton">
+        Log in with Google
+      </button>
+    {{/if}}
+  <!-- </li> -->
+</template>

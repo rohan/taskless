@@ -22,6 +22,21 @@ Meteor.methods({
     var user = Meteor.user();
 
     var parent_id = Constants.find({key: "parent_id"}).fetch()[0].value;
+
+    var tags = taskAttributes.tags;
+    var len = tags.length;
+    for (var i = 0; i < len; i++) {
+      if (Tags.find({summary: tags[i]}).fetch().length !== 0) continue;
+      var tag = {
+        summary: tags[i],
+        userId: user._id,
+        author: user.profile.name,
+        submittedDate: Date.create(),
+      }
+
+      Tags.insert(tag);
+    }
+
     var task = _.extend(taskAttributes, {
       checked: false,
       userId: user._id,

@@ -200,3 +200,7 @@ header .hide-completed {
   background-color: #d34836;
   color: #fff;
 }
+
+.bootstrap-tagsinput {
+  min-width: 100%;
+}

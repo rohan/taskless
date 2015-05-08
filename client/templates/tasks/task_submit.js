@@ -15,7 +15,8 @@ Template.taskSubmit.events({
             var input = $("#taskSubmitForm").serializeArray();
             // input is of the form [{name: "x", value: "y"}]
             input = arrayToObject(input);
-
+            input.tags = $("#tags").tagsinput('items');
+            input.tags.add("Inbox");
             console.log(input);
 
             var date = Date.create(input.date);
@@ -30,6 +31,7 @@ Template.taskSubmit.events({
               title: input.title,
               date: date,
               length: parseInt(input.length),
+              tags: input.tags,
             };
 
             console.log("[client] about to insert task", task);
@@ -49,3 +51,7 @@ Template.taskSubmit.events({
     })
   }
 });
+
+Template.taskSubmitForm.rendered = function () {
+  $("#tags").tagsinput();
+}

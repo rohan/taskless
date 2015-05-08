@@ -1,0 +1,13 @@
+<template name="tagsList">
+  <ul class="dropdown-menu scrollable-menu">
+    {{#if areTags }}
+      {{#each tags}}
+        <li class="li-dropdown-menu">
+          <a href="/tag/{{_id}}">{{summary}}</a>
+        </li>
+      {{/each}}
+    {{else}}
+      <p class="notasks lead"> no tags found </p>
+    {{/if}}
+  </ul>
+</template>

@@ -13,7 +13,12 @@
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="nav navbar-nav navbar-right" style="background-color: inherit;">
           <div class="row">
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-2">
+              {{#if currentUser}}
+                {{> navbarTags}}
+              {{/if}}
+            </div>
+            <div class="col-xs-6 col-md-2">
               {{#if currentUser}}
                 {{> navbarSubmit }}
                 <!-- {{> navbarScheduleAll }} -->
@@ -39,4 +44,13 @@
   <!-- <li id="login-dropdown-list" class="dropdown"> -->
     {{> taskScheduleAll }}
   <!-- </li> -->
+</template>
+
+<template name="navbarTags">
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      Tags <span class="caret"></span>
+    </button>
+    {{> tagsList}}
+  </div>
 </template>
